@@ -197,6 +197,13 @@ const StorageManager = {
     },
 
     /**
+     * Reset entire application storage
+     */
+    resetApp() {
+        this.clearAll();
+    },
+
+    /**
      * Generate unique ID
      * @returns {string} Unique ID
      */

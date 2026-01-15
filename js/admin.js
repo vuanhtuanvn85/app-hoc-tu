@@ -28,6 +28,9 @@ function setupEventListeners() {
 
     // Clear all data
     document.getElementById('btn-clear-all').addEventListener('click', clearAllData);
+
+    // Reset entire app
+    document.getElementById('btn-reset-app').addEventListener('click', resetAppData);
 }
 
 /**
@@ -205,6 +208,19 @@ function clearAllData() {
     StorageManager.clearAll();
     alert('Đã xóa tất cả dữ liệu!');
     loadTopicsList();
+}
+
+/**
+ * Reset the entire application (clear storage + reload)
+ */
+function resetAppData() {
+    if (!confirm('Đặt lại ứng dụng sẽ xóa toàn bộ dữ liệu đã lưu và tải lại trang. Tiếp tục?')) {
+        return;
+    }
+
+    StorageManager.resetApp();
+    alert('Ứng dụng đã được đặt lại!');
+    window.location.reload();
 }
 
 /**
