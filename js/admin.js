@@ -220,7 +220,11 @@ function resetAppData() {
 
     StorageManager.resetApp();
     alert('Ứng dụng đã được đặt lại!');
-    window.location.reload();
+
+    const cacheBust = Date.now();
+    const url = new URL('index.html', window.location.origin);
+    url.searchParams.set('refresh', cacheBust);
+    window.location.replace(url.toString());
 }
 
 /**
