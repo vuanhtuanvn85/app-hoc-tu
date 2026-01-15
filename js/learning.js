@@ -120,11 +120,11 @@ function setupEventListeners() {
  * Reveal the hidden answer
  */
 function revealAnswer() {
-    const term2 = document.getElementById('word-term2');
+    const answerContent = document.getElementById('answer-content');
     const overlay = document.getElementById('answer-overlay');
 
-    term2.classList.remove('hidden-answer');
-    term2.classList.add('shown-answer');
+    answerContent.classList.remove('hidden-answer');
+    answerContent.classList.add('shown-answer');
     overlay.classList.add('revealed');
 }
 
@@ -132,11 +132,11 @@ function revealAnswer() {
  * Hide the answer for next word
  */
 function hideAnswer() {
-    const term2 = document.getElementById('word-term2');
+    const answerContent = document.getElementById('answer-content');
     const overlay = document.getElementById('answer-overlay');
 
-    term2.classList.add('hidden-answer');
-    term2.classList.remove('shown-answer');
+    answerContent.classList.add('hidden-answer');
+    answerContent.classList.remove('shown-answer');
     overlay.classList.remove('revealed');
 }
 
@@ -201,6 +201,17 @@ function showNextWord() {
 
     document.getElementById('word-term1').textContent = currentWord.term1;
     document.getElementById('word-term2').textContent = currentWord.term2;
+
+    // Display image if available
+    const wordImage = document.getElementById('word-image');
+    if (currentWord.image) {
+        wordImage.src = currentWord.image;
+        wordImage.alt = currentWord.term2;
+        wordImage.classList.remove('hidden');
+    } else {
+        wordImage.classList.add('hidden');
+        wordImage.src = '';
+    }
 }
 
 /**

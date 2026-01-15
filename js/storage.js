@@ -58,7 +58,8 @@ const StorageManager = {
             words: topic.words.map((word, index) => ({
                 id: `${Date.now()}-${index}`,
                 term1: word.term1,
-                term2: word.term2
+                term2: word.term2,
+                image: word.image || null
             })),
             createdAt: new Date().toISOString()
         };
