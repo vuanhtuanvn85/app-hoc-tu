@@ -215,59 +215,12 @@ const StorageManager = {
      * Load sample data
      */
     loadSampleData() {
-        const sampleTopics = [
-            {
-                name: 'Trái cây',
-                icon: '🍎',
-                words: [
-                    { term1: 'quả táo', term2: 'apple' },
-                    { term1: 'quả cam', term2: 'orange' },
-                    { term1: 'quả chuối', term2: 'banana' },
-                    { term1: 'quả nho', term2: 'grape' },
-                    { term1: 'quả dâu', term2: 'strawberry' },
-                    { term1: 'quả xoài', term2: 'mango' },
-                    { term1: 'quả dưa hấu', term2: 'watermelon' },
-                    { term1: 'quả lê', term2: 'pear' },
-                    { term1: 'quả đào', term2: 'peach' },
-                    { term1: 'quả dứa', term2: 'pineapple' }
-                ]
-            },
-            {
-                name: 'Động vật',
-                icon: '🐱',
-                words: [
-                    { term1: 'con mèo', term2: 'cat' },
-                    { term1: 'con chó', term2: 'dog' },
-                    { term1: 'con chim', term2: 'bird' },
-                    { term1: 'con cá', term2: 'fish' },
-                    { term1: 'con voi', term2: 'elephant' },
-                    { term1: 'con sư tử', term2: 'lion' },
-                    { term1: 'con khỉ', term2: 'monkey' },
-                    { term1: 'con thỏ', term2: 'rabbit' },
-                    { term1: 'con gấu', term2: 'bear' },
-                    { term1: 'con hổ', term2: 'tiger' }
-                ]
-            },
-            {
-                name: 'Màu sắc',
-                icon: '🎨',
-                words: [
-                    { term1: 'màu đỏ', term2: 'red' },
-                    { term1: 'màu xanh lá', term2: 'green' },
-                    { term1: 'màu xanh dương', term2: 'blue' },
-                    { term1: 'màu vàng', term2: 'yellow' },
-                    { term1: 'màu cam', term2: 'orange' },
-                    { term1: 'màu tím', term2: 'purple' },
-                    { term1: 'màu hồng', term2: 'pink' },
-                    { term1: 'màu trắng', term2: 'white' },
-                    { term1: 'màu đen', term2: 'black' },
-                    { term1: 'màu nâu', term2: 'brown' }
-                ]
-            }
-        ];
+        if (typeof window !== 'undefined' && window.AnimalVocabulary) {
+            this.addTopic(window.AnimalVocabulary);
+            return 1;
+        }
 
-        sampleTopics.forEach(topic => this.addTopic(topic));
-        return sampleTopics.length;
+        return 0;
     }
 };
 
