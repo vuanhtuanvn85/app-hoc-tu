@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng - Đang Học</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <a href="index.html" class="back-btn">← Quay lại</a>
+            <h1 class="topic-title" id="topic-title">Đang tải...</h1>
+        </header>
+
+        <main class="learn-content">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-text">0 / 0</span>
+                    <span id="mastered-count">Đã thuộc: 0</span>
+                </div>
+            </div>
+
+            <!-- Word Display -->
+            <div class="word-card" id="word-card">
+                <div class="word-display">
+                    <div class="word-term1" id="word-term1">Từ tiếng Việt</div>
+                    <div class="word-divider">↓</div>
+                    <div class="word-term2" id="word-term2">English word</div>
+                </div>
+
+                <!-- Speaker button for TTS (future feature) -->
+                <button class="speaker-btn" id="speaker-btn" title="Nghe phát âm">
+                    🔊
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-action btn-forgot" id="btn-forgot" title="Chưa thuộc - sẽ hỏi lại">
+                    <span class="btn-icon">❌</span>
+                    <span class="btn-text">Chưa thuộc</span>
+                </button>
+                <button class="btn-action btn-know" id="btn-know" title="Đã thuộc">
+                    <span class="btn-icon">✅</span>
+                    <span class="btn-text">Đã thuộc</span>
+                </button>
+            </div>
+
+            <!-- Completion Screen -->
+            <div class="completion-screen hidden" id="completion-screen">
+                <div class="completion-content">
+                    <div class="completion-icon">🎉</div>
+                    <h2>Tuyệt vời!</h2>
+                    <p>Bé đã hoàn thành tất cả từ trong chủ đề này!</p>
+                    <div class="completion-actions">
+                        <button class="btn btn-primary" id="btn-review">📖 Ôn lại từ đầu</button>
+                        <a href="index.html" class="btn btn-secondary">🏠 Về trang chủ</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/learning.js"></script>
+</body>
+
+</html>

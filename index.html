@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Từ Vựng - Ứng Dụng Học Tập Cho Bé</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1 class="logo">🌟 Học Từ Vựng</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Trang Chủ</a>
+                <a href="admin.html" class="nav-link">Quản Trị</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="hero">
+                <h2>Chào mừng bé đến với thế giới từ vựng! 🎉</h2>
+                <p>Chọn một chủ đề bên dưới để bắt đầu học nhé!</p>
+            </section>
+
+            <section class="topics-section">
+                <h3>📚 Các Chủ Đề</h3>
+                <div id="topics-container" class="topics-grid">
+                    <!-- Topics will be loaded here -->
+                </div>
+                <div id="empty-state" class="empty-state hidden">
+                    <div class="empty-icon">📭</div>
+                    <p>Chưa có chủ đề nào.</p>
+                    <a href="admin.html" class="btn btn-primary">Thêm chủ đề mới</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ for kids</p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

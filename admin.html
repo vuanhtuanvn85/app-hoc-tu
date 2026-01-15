@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Trị - Học Từ Vựng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <h1 class="logo">⚙️ Quản Trị</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Trang Chủ</a>
+                <a href="admin.html" class="nav-link active">Quản Trị</a>
+            </nav>
+        </header>
+
+        <main class="admin-content">
+            <!-- Add New Topic Section -->
+            <section class="admin-section">
+                <h2>➕ Thêm Chủ Đề Mới</h2>
+                <div class="form-group">
+                    <label for="topic-name">Tên chủ đề:</label>
+                    <input type="text" id="topic-name" class="input-field" placeholder="Ví dụ: Trái cây">
+                </div>
+                <div class="form-group">
+                    <label for="topic-icon">Icon (emoji):</label>
+                    <input type="text" id="topic-icon" class="input-field input-icon" placeholder="🍎" maxlength="4">
+                </div>
+                <div class="form-group">
+                    <label for="words-input">Danh sách từ vựng:</label>
+                    <p class="help-text">Mỗi cặp từ gồm 2 dòng: dòng 1 là tiếng Việt, dòng 2 là tiếng Anh</p>
+                    <textarea id="words-input" class="textarea-field" rows="12" placeholder="quả táo
+apple
+cái cây
+tree
+con mèo
+cat"></textarea>
+                </div>
+                <button class="btn btn-primary btn-large" id="btn-add-topic">
+                    ✨ Thêm Chủ Đề
+                </button>
+                <div id="add-message" class="message hidden"></div>
+            </section>
+
+            <!-- Existing Topics Section -->
+            <section class="admin-section">
+                <h2>📋 Danh Sách Chủ Đề</h2>
+                <div id="topics-list" class="topics-list">
+                    <!-- Topics will be loaded here -->
+                </div>
+                <div id="no-topics" class="empty-state-small hidden">
+                    <p>Chưa có chủ đề nào.</p>
+                </div>
+            </section>
+
+            <!-- Data Management -->
+            <section class="admin-section">
+                <h2>💾 Quản Lý Dữ Liệu</h2>
+                <div class="data-actions">
+                    <button class="btn btn-secondary" id="btn-export">
+                        📤 Xuất dữ liệu (JSON)
+                    </button>
+                    <button class="btn btn-secondary" id="btn-import">
+                        📥 Nhập dữ liệu
+                    </button>
+                    <input type="file" id="file-import" accept=".json" class="hidden">
+                    <button class="btn btn-danger" id="btn-clear-all">
+                        🗑️ Xóa tất cả dữ liệu
+                    </button>
+                </div>
+            </section>
+
+            <!-- Load Sample Data -->
+            <section class="admin-section">
+                <h2>📚 Dữ Liệu Mẫu</h2>
+                <p class="help-text">Tải dữ liệu mẫu để thử nghiệm ứng dụng</p>
+                <button class="btn btn-accent" id="btn-load-sample">
+                    🎁 Tải dữ liệu mẫu
+                </button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ for kids</p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
