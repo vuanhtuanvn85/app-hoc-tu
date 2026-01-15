@@ -3,6 +3,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Auto-load animal vocabulary if no topics exist and data is available
+    const topics = StorageManager.getTopics();
+    if (topics.length === 0 && window.AnimalVocabulary) {
+        StorageManager.addTopic(window.AnimalVocabulary);
+    }
     loadTopics();
 });
 

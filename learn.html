@@ -35,10 +35,15 @@
                 <div class="word-display">
                     <div class="word-term1" id="word-term1">Từ tiếng Việt</div>
                     <div class="word-divider">↓</div>
-                    <div class="word-term2" id="word-term2">English word</div>
+                    <div class="word-term2-container" id="term2-container">
+                        <div class="word-term2 hidden-answer" id="word-term2">English word</div>
+                        <div class="answer-overlay" id="answer-overlay">
+                            <span>👆 Nhấn để xem</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Speaker button for TTS (future feature) -->
+                <!-- Speaker button for TTS -->
                 <button class="speaker-btn" id="speaker-btn" title="Nghe phát âm">
                     🔊
                 </button>
@@ -60,10 +65,10 @@
             <div class="completion-screen hidden" id="completion-screen">
                 <div class="completion-content">
                     <div class="completion-icon">🎉</div>
-                    <h2>Tuyệt vời!</h2>
-                    <p>Bé đã hoàn thành tất cả từ trong chủ đề này!</p>
+                    <h2>Chúc mừng bé!</h2>
+                    <p>Bé đã thuộc tất cả từ trong chủ đề này! Thật giỏi quá! 🌟</p>
                     <div class="completion-actions">
-                        <button class="btn btn-primary" id="btn-review">📖 Ôn lại từ đầu</button>
+                        <button class="btn btn-primary btn-large" id="btn-review">🔄 Ôn lại</button>
                         <a href="index.html" class="btn btn-secondary">🏠 Về trang chủ</a>
                     </div>
                 </div>
@@ -71,6 +76,7 @@
         </main>
     </div>
 
+    <script src="js/data/animals.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/learning.js"></script>
 </body>

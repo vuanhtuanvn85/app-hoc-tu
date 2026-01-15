@@ -88,7 +88,7 @@ function setupEventListeners() {
         handleAnswer(false);
     });
 
-    // Review button
+    // Review button (learn from beginning)
     document.getElementById('btn-review').addEventListener('click', () => {
         resetAndReview();
     });
@@ -98,15 +98,46 @@ function setupEventListeners() {
         speakWord();
     });
 
+    // Answer reveal (click on overlay to show answer)
+    document.getElementById('term2-container').addEventListener('click', () => {
+        revealAnswer();
+    });
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === 'Enter') {
             handleAnswer(true);
-        } else if (e.key === 'ArrowLeft' || e.key === ' ') {
-            e.preventDefault();
+        } else if (e.key === 'ArrowLeft') {
             handleAnswer(false);
+        } else if (e.key === ' ') {
+            e.preventDefault();
+            revealAnswer();
         }
     });
+}
+
+/**
+ * Reveal the hidden answer
+ */
+function revealAnswer() {
+    const term2 = document.getElementById('word-term2');
+    const overlay = document.getElementById('answer-overlay');
+
+    term2.classList.remove('hidden-answer');
+    term2.classList.add('shown-answer');
+    overlay.classList.add('revealed');
+}
+
+/**
+ * Hide the answer for next word
+ */
+function hideAnswer() {
+    const term2 = document.getElementById('word-term2');
+    const overlay = document.getElementById('answer-overlay');
+
+    term2.classList.add('hidden-answer');
+    term2.classList.remove('shown-answer');
+    overlay.classList.remove('revealed');
 }
 
 /**
@@ -114,7 +145,7 @@ function setupEventListeners() {
  * @param {boolean} known - true if user knows the word, false otherwise
  */
 function handleAnswer(known) {
-    if (!currentWord || wordQueue.length === 0) return;
+    if (!currentWord) return;
 
     if (known) {
         // Green button: decrease score
@@ -159,6 +190,9 @@ function showNextWord() {
 
     currentWord = wordQueue.shift();
 
+    // Hide answer for the new word
+    hideAnswer();
+
     // Animate card
     const card = document.getElementById('word-card');
     card.style.animation = 'none';
@@ -194,17 +228,17 @@ function showCompletion() {
 }
 
 /**
- * Reset progress and review from start
+ * Reset progress and review from start (Ôn lại)
  */
 function resetAndReview() {
     // Reset all progress for this topic
     progress = {};
     StorageManager.resetProgress(currentTopic.id);
 
-    // Reinitialize queue
+    // Reinitialize queue with all words
     initializeQueue();
 
-    // Hide completion screen
+    // Hide completion screen, show learning UI
     document.getElementById('completion-screen').classList.add('hidden');
     document.getElementById('word-card').classList.remove('hidden');
     document.querySelector('.action-buttons').classList.remove('hidden');
