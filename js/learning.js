@@ -93,14 +93,10 @@ function setupEventListeners() {
         resetAndReview();
     });
 
-    // Speaker button (Text-to-Speech)
-    document.getElementById('speaker-btn').addEventListener('click', () => {
-        speakWord();
-    });
-
-    // Answer reveal (click on overlay to show answer)
+    // Answer reveal (click on overlay to show answer AND speak the word)
     document.getElementById('term2-container').addEventListener('click', () => {
         revealAnswer();
+        speakWord(); // Automatically speak when revealing answer
     });
 
     // Keyboard shortcuts
@@ -112,6 +108,7 @@ function setupEventListeners() {
         } else if (e.key === ' ') {
             e.preventDefault();
             revealAnswer();
+            speakWord(); // Also speak when using spacebar
         }
     });
 }
