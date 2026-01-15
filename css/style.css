@@ -371,7 +371,7 @@ body {
     box-shadow: var(--shadow-lg);
     position: relative;
     min-height: 200px;
-    max-height: 400px;
+    max-height: 600px;
     gap: 0.5rem;
 }
 
@@ -384,8 +384,8 @@ body {
 }
 
 .word-image {
-    max-width: 150px;
-    max-height: 120px;
+    max-width: 340px;
+    max-height: 270px;
     width: auto;
     height: auto;
     object-fit: cover;
@@ -408,7 +408,7 @@ body {
 }
 
 .word-term1 {
-    font-size: 3.5rem;
+    font-size: 5.25rem;
     font-weight: 800;
     color: var(--primary-color);
     margin-bottom: 0.75rem;
@@ -422,7 +422,7 @@ body {
 }
 
 .word-term2 {
-    font-size: 3.5rem;
+    font-size: 5.25rem;
     font-weight: 800;
     color: var(--accent-purple);
     line-height: 1.2;
@@ -459,8 +459,8 @@ body {
 
 /* Word Image in answer */
 .word-image {
-    max-width: 120px;
-    max-height: 100px;
+    max-width: 270px;
+    max-height: 225px;
     width: auto;
     height: auto;
     object-fit: cover;
