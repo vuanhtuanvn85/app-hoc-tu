@@ -6,7 +6,8 @@ const StorageManager = {
     KEYS: {
         TOPICS: 'vocab_topics',
         PROGRESS: 'vocab_progress',
-        REPORTED_IMAGES: 'vocab_reported_images'
+        REPORTED_IMAGES: 'vocab_reported_images',
+        FORGOT_STATS: 'vocab_forgot_stats'
     },
 
     /**
@@ -97,7 +98,52 @@ const StorageManager = {
 
         this.saveTopics(filtered);
         this.deleteProgress(topicId);
+        this.deleteForgotStats(topicId);
         return true;
+    },
+
+    getForgotStats(topicId) {
+        try {
+            const data = localStorage.getItem(this.KEYS.FORGOT_STATS);
+            const allStats = data ? JSON.parse(data) : {};
+            return allStats[topicId] || {};
+        } catch (e) {
+            console.error('Error reading forgot stats:', e);
+            return {};
+        }
+    },
+
+    saveForgotStats(topicId, stats) {
+        try {
+            const data = localStorage.getItem(this.KEYS.FORGOT_STATS);
+            const allStats = data ? JSON.parse(data) : {};
+            allStats[topicId] = stats;
+            localStorage.setItem(this.KEYS.FORGOT_STATS, JSON.stringify(allStats));
+        } catch (e) {
+            console.error('Error saving forgot stats:', e);
+        }
+    },
+
+    recordForgot(topicId, wordId, score) {
+        const stats = this.getForgotStats(topicId);
+        const currentMax = stats[wordId] || 0;
+        const nextMax = Math.max(currentMax, score);
+        if (nextMax !== currentMax) {
+            stats[wordId] = nextMax;
+            this.saveForgotStats(topicId, stats);
+        }
+    },
+
+    deleteForgotStats(topicId) {
+        try {
+            const data = localStorage.getItem(this.KEYS.FORGOT_STATS);
+            if (!data) return;
+            const allStats = JSON.parse(data);
+            delete allStats[topicId];
+            localStorage.setItem(this.KEYS.FORGOT_STATS, JSON.stringify(allStats));
+        } catch (e) {
+            console.error('Error deleting forgot stats:', e);
+        }
     },
 
     /**
@@ -164,6 +210,7 @@ const StorageManager = {
         return JSON.stringify({
             topics: this.getTopics(),
             progress: JSON.parse(localStorage.getItem(this.KEYS.PROGRESS) || '{}'),
+            forgotStats: JSON.parse(localStorage.getItem(this.KEYS.FORGOT_STATS) || '{}'),
             exportedAt: new Date().toISOString()
         }, null, 2);
     },
@@ -182,6 +229,9 @@ const StorageManager = {
             if (data.progress) {
                 localStorage.setItem(this.KEYS.PROGRESS, JSON.stringify(data.progress));
             }
+            if (data.forgotStats) {
+                localStorage.setItem(this.KEYS.FORGOT_STATS, JSON.stringify(data.forgotStats));
+            }
             return true;
         } catch (e) {
             console.error('Error importing data:', e);
@@ -195,6 +245,7 @@ const StorageManager = {
     clearAll() {
         localStorage.removeItem(this.KEYS.TOPICS);
         localStorage.removeItem(this.KEYS.PROGRESS);
+        localStorage.removeItem(this.KEYS.FORGOT_STATS);
     },
 
     /**

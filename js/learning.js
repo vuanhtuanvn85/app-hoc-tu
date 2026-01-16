@@ -167,6 +167,8 @@ function handleAnswer(known) {
         currentWord.score++;
         progress[currentWord.id] = currentWord.score;
 
+        StorageManager.recordForgot(currentTopic.id, currentWord.id, currentWord.score);
+
         // Insert after 3 words (or at end if queue is shorter)
         const insertPosition = Math.min(3, wordQueue.length);
         wordQueue.splice(insertPosition, 0, currentWord);

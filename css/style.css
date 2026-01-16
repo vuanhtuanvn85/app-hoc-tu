@@ -821,6 +821,21 @@ body {
     color: var(--text-secondary);
 }
 
+.forgot-max {
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.forgot-max-number {
+    display: inline-block;
+    min-width: 3ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
 .topic-item-actions {
     display: flex;
     gap: 0.5rem;

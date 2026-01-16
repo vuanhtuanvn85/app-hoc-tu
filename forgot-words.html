@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Từ Từng Chưa Thuộc - Học Từ Vựng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="header">
+            <a href="admin.html" class="back-btn">← Quay lại Quản trị</a>
+            <h1 class="logo">📌 Từ Từng Chưa Thuộc</h1>
+        </header>
+
+        <main class="admin-content">
+            <section class="admin-section">
+                <div class="section-header">
+                    <h2>📋 Danh sách theo chủ đề</h2>
+                    <div class="header-actions">
+                        <span id="total-count" class="count-badge">0 từ</span>
+                    </div>
+                </div>
+
+                <div id="forgot-words-container" class="reports-container"></div>
+
+                <div id="empty-state" class="empty-state hidden">
+                    <div class="empty-icon">✅</div>
+                    <p>Chưa có từ nào được đánh dấu là chưa thuộc</p>
+                    <a href="admin.html" class="btn btn-primary">Về quản trị</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Made with ❤️ for kids</p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/forgot-words.js"></script>
+</body>
+
+</html>
