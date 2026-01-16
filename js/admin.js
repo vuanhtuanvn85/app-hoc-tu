@@ -3,6 +3,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize B1 sub-topics
+    if (typeof window.initB1SubTopics === 'function') {
+        window.initB1SubTopics();
+    }
     loadTopicsList();
     setupEventListeners();
 });
@@ -114,12 +118,29 @@ function loadTopicsList() {
     container.classList.remove('hidden');
     noTopics.classList.add('hidden');
 
-    container.innerHTML = topics.map(topic => `
-        <div class="topic-item" data-id="${topic.id}">
+    container.innerHTML = topics.map(topic => {
+        // Check if this is a parent topic with sub-topics
+        if (topic.isParent && topic.subTopics) {
+            return renderParentTopicItem(topic);
+        } else {
+            return renderTopicItem(topic);
+        }
+    }).join('');
+}
+
+/**
+ * Render a single topic item
+ */
+function renderTopicItem(topic, isSubTopic = false) {
+    const subTopicClass = isSubTopic ? 'sub-topic-item' : '';
+    const wordCount = topic.words ? topic.words.length : 0;
+
+    return `
+        <div class="topic-item ${subTopicClass}" data-id="${topic.id}">
             <div class="topic-item-info">
                 <span class="topic-item-icon">${topic.icon}</span>
                 <span class="topic-item-name">${escapeHtml(topic.name)}</span>
-                <span class="topic-item-count">(${topic.words.length} từ)</span>
+                <span class="topic-item-count">(${wordCount} từ)</span>
             </div>
             <div class="topic-item-actions">
                 <button class="btn-icon-small btn-delete" onclick="deleteTopic('${topic.id}')" title="Xóa">
@@ -127,7 +148,36 @@ function loadTopicsList() {
                 </button>
             </div>
         </div>
-    `).join('');
+    `;
+}
+
+/**
+ * Render a parent topic with sub-topics
+ */
+function renderParentTopicItem(topic) {
+    const subTopicsHtml = topic.subTopics.map(subTopic =>
+        renderTopicItem(subTopic, true)
+    ).join('');
+
+    return `
+        <div class="parent-topic-item" data-id="${topic.id}">
+            <div class="topic-item parent-header">
+                <div class="topic-item-info">
+                    <span class="topic-item-icon">${topic.icon}</span>
+                    <span class="topic-item-name">${escapeHtml(topic.name)}</span>
+                    <span class="topic-item-count">(${topic.subTopics.length} chủ đề con)</span>
+                </div>
+                <div class="topic-item-actions">
+                    <button class="btn-icon-small btn-delete" onclick="deleteTopic('${topic.id}')" title="Xóa">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+            <div class="sub-topics-list">
+                ${subTopicsHtml}
+            </div>
+        </div>
+    `;
 }
 
 /**

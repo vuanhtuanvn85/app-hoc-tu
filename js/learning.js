@@ -206,16 +206,50 @@ function showNextWord() {
     document.getElementById('word-term1').textContent = currentWord.term1;
     document.getElementById('word-term2').textContent = currentWord.term2;
 
-    // Display image if available
+    // Display image if available, otherwise show extra info (IPA, example)
     const wordImage = document.getElementById('word-image');
+    const extraInfo = document.getElementById('word-extra-info');
+
     if (currentWord.image) {
+        // Has image: show image, hide extra info
         wordImage.src = currentWord.image;
         wordImage.alt = currentWord.term2;
         wordImage.classList.remove('hidden');
+        if (extraInfo) extraInfo.classList.add('hidden');
     } else {
+        // No image: hide image, show extra info if available
         wordImage.classList.add('hidden');
         wordImage.src = '';
+
+        // Show IPA and example if available
+        if (extraInfo) {
+            const hasIpa = currentWord.ipa && currentWord.ipa.trim();
+            const hasExample = currentWord.example && currentWord.example.trim();
+
+            if (hasIpa || hasExample) {
+                let extraHtml = '';
+                if (hasIpa) {
+                    extraHtml += `<div class="word-ipa">${escapeHtml(currentWord.ipa)}</div>`;
+                }
+                if (hasExample) {
+                    extraHtml += `<div class="word-example">${escapeHtml(currentWord.example)}</div>`;
+                }
+                extraInfo.innerHTML = extraHtml;
+                extraInfo.classList.remove('hidden');
+            } else {
+                extraInfo.classList.add('hidden');
+            }
+        }
     }
+}
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 /**

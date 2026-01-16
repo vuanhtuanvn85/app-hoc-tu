@@ -43,7 +43,20 @@ const StorageManager = {
      */
     getTopic(topicId) {
         const topics = this.getTopics();
-        return topics.find(t => t.id === topicId) || null;
+
+        // First, try to find in top-level topics
+        const topLevelTopic = topics.find(t => t.id === topicId);
+        if (topLevelTopic) return topLevelTopic;
+
+        // If not found, search in sub-topics of parent topics
+        for (const topic of topics) {
+            if (topic.isParent && topic.subTopics) {
+                const subTopic = topic.subTopics.find(st => st.id === topicId);
+                if (subTopic) return subTopic;
+            }
+        }
+
+        return null;
     },
 
     /**
@@ -53,14 +66,47 @@ const StorageManager = {
      */
     addTopic(topic) {
         const topics = this.getTopics();
+
+        // Check if this is a parent topic with sub-topics
+        if (topic.isParent && topic.subTopics) {
+            const newParentTopic = {
+                id: topic.id || this.generateId(),
+                name: topic.name,
+                icon: topic.icon || '📚',
+                isParent: true,
+                subTopics: topic.subTopics.map(subTopic => ({
+                    id: subTopic.id || this.generateId(),
+                    name: subTopic.name,
+                    icon: subTopic.icon || '📖',
+                    isParent: false,
+                    words: subTopic.words.map((word, index) => ({
+                        id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 5)}`,
+                        term1: word.term1,
+                        term2: word.term2,
+                        ipa: word.ipa || null,
+                        example: word.example || null,
+                        image: word.image || null
+                    }))
+                })),
+                createdAt: new Date().toISOString()
+            };
+            topics.push(newParentTopic);
+            this.saveTopics(topics);
+            return newParentTopic;
+        }
+
+        // Regular topic (not a parent)
         const newTopic = {
-            id: this.generateId(),
+            id: topic.id || this.generateId(),
             name: topic.name,
             icon: topic.icon || '📚',
+            isParent: false,
             words: topic.words.map((word, index) => ({
                 id: `${Date.now()}-${index}`,
                 term1: word.term1,
                 term2: word.term2,
+                ipa: word.ipa || null,
+                example: word.example || null,
                 image: word.image || null
             })),
             createdAt: new Date().toISOString()
@@ -360,7 +406,8 @@ const StorageManager = {
             window.VegetablesVocabulary,
             window.HouseholdVocabulary,
             window.OccupationsVocabulary,
-            window.ColorsShapesVocabulary
+            window.ColorsShapesVocabulary,
+            window.B1Vocabulary  // B1 parent topic with sub-topics
         ];
 
         sampleVocabs.forEach(vocab => {

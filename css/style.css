@@ -428,6 +428,40 @@ body {
     line-height: 1.2;
 }
 
+/* Extra Info: IPA and Example (shown when no image) */
+.word-extra-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, #f8f5ff, #fff);
+    border-radius: var(--radius-md);
+    border: 1px solid #e9e3ff;
+    max-width: 90%;
+}
+
+.word-ipa {
+    font-size: 2.625rem; /* 50% of term2 size (5.25rem) */
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.word-example {
+    font-size: 1.3rem; /* Smaller for example sentences */
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.5;
+    font-style: italic;
+    padding: 0.5rem 1rem;
+    background: rgba(155, 93, 229, 0.08);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent-purple);
+}
+
 /* Hidden answer overlay */
 .word-term2-container {
     position: relative;
@@ -798,6 +832,46 @@ body {
     background: var(--bg-color);
     border-radius: var(--radius-md);
     gap: 1rem;
+}
+
+/* Parent Topic Item in Admin */
+.parent-topic-item {
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--accent-purple);
+    overflow: hidden;
+}
+
+.parent-topic-item .parent-header {
+    background: linear-gradient(135deg, #f8f5ff, #fff);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.parent-topic-item .parent-header .topic-item-name {
+    color: var(--accent-purple);
+    font-weight: 700;
+}
+
+.sub-topics-list {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #faf8ff;
+}
+
+.topic-item.sub-topic-item {
+    background: var(--card-bg);
+    border: 1px solid #e9e3ff;
+    padding: 0.75rem 1rem;
+}
+
+.topic-item.sub-topic-item .topic-item-icon {
+    font-size: 1.25rem;
+}
+
+.topic-item.sub-topic-item .topic-item-name {
+    font-size: 0.95rem;
 }
 
 .topic-item-info {
@@ -1176,6 +1250,14 @@ body {
         font-size: 2.5rem;
     }
     
+    .word-ipa {
+        font-size: 1.25rem;
+    }
+    
+    .word-example {
+        font-size: 1rem;
+    }
+    
     .action-buttons {
         gap: 0.75rem;
     }
@@ -1232,5 +1314,82 @@ body {
     
     .btn-action .btn-icon {
         font-size: 1.75rem;
+    }
+}
+
+/* ===== Parent Topics (B1 Vocabulary) ===== */
+/* Parent Topic Card - Clickable to go to subtopics page */
+.topic-card.parent-topic-card {
+    background: linear-gradient(135deg, #f8f5ff, #fff);
+    border: 2px solid var(--accent-purple);
+    position: relative;
+}
+
+.topic-card.parent-topic-card:hover {
+    border-color: #7c3aed;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(155, 93, 229, 0.25);
+}
+
+.topic-card.parent-topic-card .topic-icon {
+    background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+}
+
+.topic-card.parent-topic-card .topic-name {
+    color: var(--accent-purple);
+    font-weight: 800;
+}
+
+.parent-badge {
+    background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Sub-topics Container (used on subtopics.html page) */
+.sub-topics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+/* Sub-topic Cards */
+.topic-card.sub-topic {
+    background: linear-gradient(135deg, #f8f5ff, #fff);
+    border: 2px solid #e9e3ff;
+    padding: 1.25rem;
+}
+
+.topic-card.sub-topic:hover {
+    border-color: var(--accent-purple);
+    transform: translateY(-3px);
+}
+
+.topic-card.sub-topic .topic-icon {
+    background: linear-gradient(135deg, #b794f6, var(--accent-purple));
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+}
+
+.topic-card.sub-topic .topic-name {
+    font-size: 1.1rem;
+}
+
+.topic-card.sub-topic .topic-progress-fill {
+    background: linear-gradient(90deg, var(--accent-purple), #7c3aed);
+}
+
+/* Responsive for Parent Topics */
+@media (max-width: 768px) {
+    .sub-topics-container {
+        grid-template-columns: 1fr;
     }
 }

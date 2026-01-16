@@ -3,6 +3,11 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize B1 sub-topics
+    if (typeof window.initB1SubTopics === 'function') {
+        window.initB1SubTopics();
+    }
+
     // Auto-load all sample vocabularies if no topics exist
     const topics = StorageManager.getTopics();
     if (topics.length === 0) {
@@ -12,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.VegetablesVocabulary,
             window.HouseholdVocabulary,
             window.OccupationsVocabulary,
-            window.ColorsShapesVocabulary
+            window.ColorsShapesVocabulary,
+            window.B1Vocabulary  // Add B1 parent topic
         ];
 
         sampleVocabs.forEach(vocab => {
@@ -42,27 +48,64 @@ function loadTopics() {
     emptyState.classList.add('hidden');
 
     container.innerHTML = topics.map(topic => {
-        const progress = StorageManager.getProgress(topic.id);
-        const masteredCount = countMastered(topic.words, progress);
-        const totalWords = topic.words.length;
-        const remainingCount = Math.max(0, totalWords - masteredCount);
-        const progressPercent = totalWords > 0 ? (masteredCount / totalWords) * 100 : 0;
-
-        return `
-            <a href="learn.html?topic=${topic.id}" class="topic-card">
-                <div class="topic-card-header">
-                    <div class="topic-icon">${topic.icon}</div>
-                    <div class="topic-info">
-                        <div class="topic-name">${escapeHtml(topic.name)}</div>
-                        <div class="topic-count">${totalWords} từ • Còn lại: ${remainingCount}</div>
-                    </div>
-                </div>
-                <div class="topic-progress">
-                    <div class="topic-progress-fill" style="width: ${progressPercent}%"></div>
-                </div>
-            </a>
-        `;
+        // Check if this is a parent topic with sub-topics
+        if (topic.isParent && topic.subTopics && topic.subTopics.length > 0) {
+            return renderParentTopic(topic);
+        } else {
+            return renderSingleTopic(topic);
+        }
     }).join('');
+}
+
+/**
+ * Render a single topic card
+ */
+function renderSingleTopic(topic, isSubTopic = false) {
+    const progress = StorageManager.getProgress(topic.id);
+    const masteredCount = countMastered(topic.words, progress);
+    const totalWords = topic.words.length;
+    const remainingCount = Math.max(0, totalWords - masteredCount);
+    const progressPercent = totalWords > 0 ? (masteredCount / totalWords) * 100 : 0;
+    const subTopicClass = isSubTopic ? 'sub-topic' : '';
+
+    return `
+        <a href="learn.html?topic=${topic.id}" class="topic-card ${subTopicClass}">
+            <div class="topic-card-header">
+                <div class="topic-icon">${topic.icon}</div>
+                <div class="topic-info">
+                    <div class="topic-name">${escapeHtml(topic.name)}</div>
+                    <div class="topic-count">${totalWords} từ • Còn lại: ${remainingCount}</div>
+                </div>
+            </div>
+            <div class="topic-progress">
+                <div class="topic-progress-fill" style="width: ${progressPercent}%"></div>
+            </div>
+        </a>
+    `;
+}
+
+/**
+ * Render a parent topic card (clickable to go to subtopics page)
+ */
+function renderParentTopic(topic) {
+    // Calculate total words across all sub-topics
+    const totalSubTopics = topic.subTopics.length;
+    const totalWords = topic.subTopics.reduce((sum, st) => sum + (st.words ? st.words.length : 0), 0);
+
+    return `
+        <a href="subtopics.html?parent=${topic.id}" class="topic-card parent-topic-card">
+            <div class="topic-card-header">
+                <div class="topic-icon">${topic.icon}</div>
+                <div class="topic-info">
+                    <div class="topic-name">${escapeHtml(topic.name)}</div>
+                    <div class="topic-count">${totalSubTopics} chủ đề con • ${totalWords} từ</div>
+                </div>
+            </div>
+            <div class="parent-badge">
+                <span>📂 Nhấn để xem chủ đề con</span>
+            </div>
+        </a>
+    `;
 }
 
 /**
