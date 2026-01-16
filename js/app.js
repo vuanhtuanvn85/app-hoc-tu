@@ -3,10 +3,23 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Auto-load animal vocabulary if no topics exist and data is available
+    // Auto-load all sample vocabularies if no topics exist
     const topics = StorageManager.getTopics();
-    if (topics.length === 0 && window.AnimalVocabulary) {
-        StorageManager.addTopic(window.AnimalVocabulary);
+    if (topics.length === 0) {
+        const sampleVocabs = [
+            window.AnimalVocabulary,
+            window.FruitsVocabulary,
+            window.VegetablesVocabulary,
+            window.HouseholdVocabulary,
+            window.OccupationsVocabulary,
+            window.ColorsShapesVocabulary
+        ];
+
+        sampleVocabs.forEach(vocab => {
+            if (vocab) {
+                StorageManager.addTopic(vocab);
+            }
+        });
     }
     loadTopics();
 });

@@ -88,6 +88,11 @@ function setupEventListeners() {
         handleAnswer(false);
     });
 
+    // Report button (report problematic image)
+    document.getElementById('btn-report').addEventListener('click', () => {
+        handleReportImage();
+    });
+
     // Review button (learn from beginning)
     document.getElementById('btn-review').addEventListener('click', () => {
         resetAndReview();
@@ -253,6 +258,58 @@ function resetAndReview() {
 
     // Show first word
     showNextWord();
+}
+
+/**
+ * Handle reporting problematic image
+ */
+function handleReportImage() {
+    if (!currentWord) return;
+
+    const success = StorageManager.reportImage(
+        currentTopic.id,
+        currentTopic.name,
+        currentTopic.icon,
+        currentWord
+    );
+
+    if (success) {
+        // Show success notification
+        showNotification('✅ Đã báo cáo hình ảnh có vấn đề!', 'success');
+    } else {
+        // Already reported
+        showNotification('ℹ️ Hình ảnh này đã được báo cáo trước đó', 'info');
+    }
+
+    // Continue with the current word (don't remove from queue)
+    // Just show next word without changing score
+    showNextWord();
+}
+
+/**
+ * Show notification message
+ * @param {string} message Message to display
+ * @param {string} type Notification type ('success', 'info', 'error')
+ */
+function showNotification(message, type = 'info') {
+    // Remove existing notification if any
+    const existingNotif = document.querySelector('.notification');
+    if (existingNotif) {
+        existingNotif.remove();
+    }
+
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('fade-out');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
 /**

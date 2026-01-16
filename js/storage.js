@@ -5,7 +5,8 @@
 const StorageManager = {
     KEYS: {
         TOPICS: 'vocab_topics',
-        PROGRESS: 'vocab_progress'
+        PROGRESS: 'vocab_progress',
+        REPORTED_IMAGES: 'vocab_reported_images'
     },
 
     /**
@@ -212,15 +213,113 @@ const StorageManager = {
     },
 
     /**
+     * Get all reported images
+     * @returns {Array} Array of reported image objects
+     */
+    getReportedImages() {
+        try {
+            const data = localStorage.getItem(this.KEYS.REPORTED_IMAGES);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.error('Error reading reported images:', e);
+            return [];
+        }
+    },
+
+    /**
+     * Report an image as problematic
+     * @param {string} topicId Topic ID
+     * @param {string} topicName Topic name
+     * @param {string} topicIcon Topic icon
+     * @param {Object} word Word object with id, term1, term2, image
+     * @returns {boolean} Success status
+     */
+    reportImage(topicId, topicName, topicIcon, word) {
+        try {
+            const reportedImages = this.getReportedImages();
+
+            // Check if already reported
+            const alreadyReported = reportedImages.some(
+                item => item.topicId === topicId && item.wordId === word.id
+            );
+
+            if (alreadyReported) {
+                return false; // Already reported
+            }
+
+            reportedImages.push({
+                id: this.generateId(),
+                topicId,
+                topicName,
+                topicIcon,
+                wordId: word.id,
+                term1: word.term1,
+                term2: word.term2,
+                image: word.image,
+                reportedAt: new Date().toISOString()
+            });
+
+            localStorage.setItem(this.KEYS.REPORTED_IMAGES, JSON.stringify(reportedImages));
+            return true;
+        } catch (e) {
+            console.error('Error reporting image:', e);
+            return false;
+        }
+    },
+
+    /**
+     * Remove a reported image from the list
+     * @param {string} reportId Report ID
+     * @returns {boolean} Success status
+     */
+    removeReportedImage(reportId) {
+        try {
+            const reportedImages = this.getReportedImages();
+            const filtered = reportedImages.filter(item => item.id !== reportId);
+
+            if (filtered.length === reportedImages.length) {
+                return false; // Not found
+            }
+
+            localStorage.setItem(this.KEYS.REPORTED_IMAGES, JSON.stringify(filtered));
+            return true;
+        } catch (e) {
+            console.error('Error removing reported image:', e);
+            return false;
+        }
+    },
+
+    /**
+     * Clear all reported images
+     */
+    clearReportedImages() {
+        localStorage.removeItem(this.KEYS.REPORTED_IMAGES);
+    },
+
+    /**
      * Load sample data
      */
     loadSampleData() {
-        if (typeof window !== 'undefined' && window.AnimalVocabulary) {
-            this.addTopic(window.AnimalVocabulary);
-            return 1;
-        }
+        let count = 0;
 
-        return 0;
+        // Load all available sample vocabularies
+        const sampleVocabs = [
+            window.AnimalVocabulary,
+            window.FruitsVocabulary,
+            window.VegetablesVocabulary,
+            window.HouseholdVocabulary,
+            window.OccupationsVocabulary,
+            window.ColorsShapesVocabulary
+        ];
+
+        sampleVocabs.forEach(vocab => {
+            if (vocab) {
+                this.addTopic(vocab);
+                count++;
+            }
+        });
+
+        return count;
     }
 };
 
