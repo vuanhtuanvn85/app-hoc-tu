@@ -45,6 +45,7 @@ function loadTopics() {
         const progress = StorageManager.getProgress(topic.id);
         const masteredCount = countMastered(topic.words, progress);
         const totalWords = topic.words.length;
+        const remainingCount = Math.max(0, totalWords - masteredCount);
         const progressPercent = totalWords > 0 ? (masteredCount / totalWords) * 100 : 0;
 
         return `
@@ -53,7 +54,7 @@ function loadTopics() {
                     <div class="topic-icon">${topic.icon}</div>
                     <div class="topic-info">
                         <div class="topic-name">${escapeHtml(topic.name)}</div>
-                        <div class="topic-count">${totalWords} từ</div>
+                        <div class="topic-count">${totalWords} từ • Còn lại: ${remainingCount}</div>
                     </div>
                 </div>
                 <div class="topic-progress">
