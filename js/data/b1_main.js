@@ -15,6 +15,7 @@ const B1Vocabulary = {
 function initB1SubTopics() {
     B1Vocabulary.subTopics = [
         window.B1_01_PersonalInfo,
+        window.B1_02_Feelings,
         // Add more sub-topics here as they are created
     ].filter(t => t !== undefined);
 }

@@ -74,7 +74,10 @@ function renderSingleTopic(topic, isSubTopic = false) {
                 <div class="topic-icon">${topic.icon}</div>
                 <div class="topic-info">
                     <div class="topic-name">${escapeHtml(topic.name)}</div>
-                    <div class="topic-count">${totalWords} từ • Còn lại: ${remainingCount}</div>
+                    <div class="topic-count">
+                        <span class="word-count">${totalWords} từ</span>
+                        <span class="remaining-count">Còn lại: <span class="remaining-number">${remainingCount}</span></span>
+                    </div>
                 </div>
             </div>
             <div class="topic-progress">

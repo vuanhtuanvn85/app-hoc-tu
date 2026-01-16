@@ -218,6 +218,21 @@ body {
 .topic-count {
     font-size: 0.9rem;
     color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.topic-count .remaining-count {
+    text-align: right;
+}
+
+.topic-count .remaining-number {
+    display: inline-block;
+    min-width: 2.5ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
 .topic-progress {
@@ -1381,6 +1396,12 @@ body {
 
 .topic-card.sub-topic .topic-name {
     font-size: 1.1rem;
+    line-height: 1.4;
+    min-height: 3.08rem; /* 2 lines: 1.1rem * 1.4 * 2 = 3.08rem */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .topic-card.sub-topic .topic-progress-fill {
