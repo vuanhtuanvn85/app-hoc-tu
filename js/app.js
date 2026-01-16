@@ -61,6 +61,11 @@ function loadTopics() {
  * Render a single topic card
  */
 function renderSingleTopic(topic, isSubTopic = false) {
+    // Safety check: if topic doesn't have words, return empty string or skip rendering
+    if (!topic.words || !Array.isArray(topic.words)) {
+        return '';
+    }
+
     const progress = StorageManager.getProgress(topic.id);
     const masteredCount = countMastered(topic.words, progress);
     const totalWords = topic.words.length;
@@ -115,6 +120,11 @@ function renderParentTopic(topic) {
  * Count mastered words in a topic
  */
 function countMastered(words, progress) {
+    // Safety check: return 0 if words is not a valid array
+    if (!words || !Array.isArray(words)) {
+        return 0;
+    }
+
     return words.filter(word => {
         const score = progress[word.id];
         return score !== undefined && score < 0;
