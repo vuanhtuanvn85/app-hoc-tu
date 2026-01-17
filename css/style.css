@@ -923,7 +923,35 @@ body {
     min-width: 3ch;
     text-align: right;
     font-variant-numeric: tabular-nums;
+    color: var(--accent-red);
+    font-weight: 700;
 }
+
+.forgot-current-number {
+    display: inline-block;
+    min-width: 3ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-yellow);
+    font-weight: 700;
+}
+
+
+/* Mastered word styling */
+.mastered-word {
+    opacity: 0.75;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+    border: 1px solid #86efac;
+}
+
+.mastered-word .topic-item-name {
+    color: var(--accent-green-dark);
+}
+
+.mastered-word .forgot-max {
+    color: var(--accent-green-dark);
+}
+
 
 .topic-item-actions {
     display: flex;

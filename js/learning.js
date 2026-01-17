@@ -47,21 +47,55 @@ function initLearning() {
  * Initialize the word queue with non-mastered words
  */
 function initializeQueue() {
-    wordQueue = [];
+    const newWords = [];
+    const forgotWords = [];
 
     currentTopic.words.forEach(word => {
         const score = progress[word.id];
         // Include word if not mastered (score >= 0 or undefined)
         if (score === undefined || score >= 0) {
-            wordQueue.push({
+            const wordWithScore = {
                 ...word,
                 score: score !== undefined ? score : 0
-            });
+            };
+
+            if (score > 0) {
+                // This is a forgot word (has positive score)
+                forgotWords.push(wordWithScore);
+            } else {
+                // New word or neutral word
+                newWords.push(wordWithScore);
+            }
         }
     });
 
-    // Shuffle the queue for variety
-    shuffleArray(wordQueue);
+    // Shuffle new words for variety
+    shuffleArray(newWords);
+
+    // Sort forgot words by score (highest first) for priority
+    forgotWords.sort((a, b) => b.score - a.score);
+
+    // Build the queue: start with new words, then insert forgot words strategically
+    wordQueue = [...newWords];
+
+    // Process forgot words in reverse order (lowest score first) 
+    // so higher priority words end up closer to the front
+    for (let i = forgotWords.length - 1; i >= 0; i--) {
+        const word = forgotWords[i];
+
+        // Number of repetitions = score
+        // First insertion at position 0 (highest priority)
+        wordQueue.unshift({ ...word });
+
+        // Add repetitions at positions: 2, 5, 8, 11, 14, 17, 20...
+        // Pattern: position = 3*j - 1 (where j = 1, 2, 3, ...)
+        // Score 6 means 5 more repetitions (total 6 including position 0)
+        for (let j = 1; j < word.score; j++) {
+            const targetPos = 3 * j - 1; // Positions: 2, 5, 8, 11, 14, 17...
+            const insertPos = Math.min(targetPos, wordQueue.length);
+            wordQueue.splice(insertPos, 0, { ...word });
+        }
+    }
 }
 
 /**
@@ -154,24 +188,49 @@ function handleAnswer(known) {
         currentWord.score--;
 
         if (currentWord.score < 0) {
-            // Word is mastered, remove from queue
+            // Word is mastered, remove from queue and delete all duplicates
             progress[currentWord.id] = currentWord.score;
+
+            // Remove all instances of this word from the queue
+            wordQueue = wordQueue.filter(w => w.id !== currentWord.id);
         } else {
-            // Keep in queue but move to later position
+            // Keep in queue but update score for all instances
             progress[currentWord.id] = currentWord.score;
+
+            // Update score for all duplicate instances in the queue
+            wordQueue.forEach(w => {
+                if (w.id === currentWord.id) {
+                    w.score = currentWord.score;
+                }
+            });
+
             // Add back to end of queue
             wordQueue.push(currentWord);
         }
     } else {
-        // Red button: increase score and add to priority position (after 3 words)
-        currentWord.score++;
+        // Red button: increase score by 3 and insert word at 3 positions for spaced repetition
+        currentWord.score += 3;
         progress[currentWord.id] = currentWord.score;
 
         StorageManager.recordForgot(currentTopic.id, currentWord.id, currentWord.score);
 
-        // Insert after 3 words (or at end if queue is shorter)
-        const insertPosition = Math.min(3, wordQueue.length);
-        wordQueue.splice(insertPosition, 0, currentWord);
+        // Update score for all existing instances in the queue
+        wordQueue.forEach(w => {
+            if (w.id === currentWord.id) {
+                w.score = currentWord.score;
+            }
+        });
+
+        // Insert the word at 3 positions: after 2, 5, and 8 words
+        // This ensures the user encounters it 3 times for better retention
+        const positions = [2, 5, 8];
+
+        // Insert from largest position to smallest to maintain correct positions
+        for (let i = positions.length - 1; i >= 0; i--) {
+            const position = Math.min(positions[i], wordQueue.length);
+            // Create a copy of the word for each insertion
+            wordQueue.splice(position, 0, { ...currentWord });
+        }
     }
 
     // Save progress
